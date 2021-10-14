@@ -7,6 +7,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
+  itemCount: number = 4;
+  btntext: string = 'Add an item';
+
   constructor() { }
 
   ngOnInit(): void {
