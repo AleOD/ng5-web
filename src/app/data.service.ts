@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 
 @Injectable()
 
@@ -10,7 +10,7 @@ export class DataService {
 
   constructor() { }
 
-  changeGoal(goal){
+  changeGoal(goal: any){
     this.goals.next(goal);
   }
 }
