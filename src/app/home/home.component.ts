@@ -22,7 +22,7 @@ export class HomeComponent implements OnInit {
   goals = [];
 
   loading: boolean | undefined;
-  private querySubscription: Subscription;
+  private querySubscription?: Subscription;
 
 
   constructor(private _data: DataService, 
