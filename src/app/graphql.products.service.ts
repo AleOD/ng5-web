@@ -1,9 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Apollo, gql} from 'apollo-angular';
 import { Subscription } from 'rxjs';
-//import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
-//import { StorageService } from "./storage.service";
 
 const TOKENAUTH = gql`
   mutation TokenAuth($username: String!, $password: String!) {
