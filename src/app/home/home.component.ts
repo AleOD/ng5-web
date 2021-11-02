@@ -19,11 +19,10 @@ export class HomeComponent implements OnInit {
   pass: string = ""
   token: string = ""
 
-  goals : Array<any> = [];
+  goals = [];
 
-
-  loading: boolean | undefined;
-  private querySubscription?: Subscription;
+  loading: boolean;
+  private querySubscription: Subscription;
 
 
   constructor(private _data: DataService, 
@@ -32,15 +31,18 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.itemCount = this.goals.length;
-    
-    this.querySubscription = this.graphqlProductsService.links("-")
-      .valueChanges
-      .subscribe(({ data, loading }) => {
-        this.loading = loading;
-        this.goals = JSON.parse(JSON.stringify(data)).links;
-        console.log(JSON.stringify(this.goals))
-      });
+    this.getLinks();
+  }
 
+  getLinks() {
+    this.querySubscription = this.graphqlProductsService.links("-")
+    .valueChanges
+    .subscribe(({ data, loading }) => {
+      this.loading = loading;
+      this.goals = JSON.parse(JSON.stringify(data)).links;
+      this.itemCount = this.goals.length;
+      console.log(JSON.stringify(this.goals))
+    });
   }
 
   loginUser() {
@@ -51,6 +53,7 @@ export class HomeComponent implements OnInit {
        console.log('logged: ', JSON.stringify(data));
        
       this.token =  JSON.parse(JSON.stringify(data)).tokenAuth.token;
+      localStorage.setItem('token', this.token);
     }, (error) => {
        console.log('there was an error sending the query', error);
     });
@@ -58,26 +61,29 @@ export class HomeComponent implements OnInit {
   }  
 
   addItem() {
-    if(this.token){
-      var mytoken = this.token;
+    if (localStorage.getItem('token')) {
+      // var mytoken = this.token;
+      var mytoken = localStorage.getItem('token');
+      //this.storageService.getSession("token");
       alert(this.goalText);
-
+  
       this.graphqlProductsService.createLink(mytoken, "https://www.github.com", this.goalText)
       .subscribe(({ data }) => {
-        console.log('link created :  ', data);
+         console.log('link created :  ', data);
       }, (error) => {
-        console.log('there was an error sending the query', error);
+         console.log('there was an error sending the query', error);
       });
-
+  
       this.goalText = "";
       this.itemCount = this.goals.length;
       this._data.changeGoal(this.goals);
-    }else{
-      alert("No token, login");
+      this.getLinks();
+    } else {
+      alert('There is no auth token saved. Please login.');
     }
   }
 
-  removeItem(i:any) {
+  removeItem(i) {
     this.goals.splice(i,1);
     this._data.changeGoal(this.goals);
   }
