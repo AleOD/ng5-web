@@ -1,5 +1,12 @@
 # Ng5
+<<<<<<< HEAD
 #Hotfixes
+||||||| b1aead7
+
+=======
+#Develop
+
+>>>>>>> fa90fdcab0af0634145f4b75fe827cc7ecf41c26
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.6.
 
 ## Development server
