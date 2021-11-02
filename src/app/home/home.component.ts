@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { trigger,style,transition,animate,keyframes,query,stagger } from '@angular/animations';
 import { DataService } from '../data.service';
+import { GraphqlProductsService} from '../graphql.products.service';
+import { Subscription } from 'rxjs';
+import { GraphqlUsersService} from '../graphql.users.service';
 
 @Component({
   selector: 'app-home',
@@ -35,14 +38,36 @@ export class HomeComponent implements OnInit {
   itemCount: number = 4;
   btnText: string = 'Add an item';
   goalText: string = 'My first life goal';
+  user: string = ""
+  pass: string = ""
+  token: string = ""
   goals :any;
+  
+  loading: boolean;
+  private querySubscription: Subscription;
 
-  constructor(private _data: DataService) { }
+  constructor(private _data: DataService, 
+    private graphqlProductsService: GraphqlProductsService,
+    private graphqlUsersService : GraphqlUsersService) { }
 
   ngOnInit(): void{
-    this._data.goal.subscribe(res => this.goals = res);
     this.itemCount = this.goals.length;
+
+
+/*    this._data.goal.subscribe(
+       res => 
+            this.goals = res
+    );
     this._data.changeGoal(this.goals);
+*/
+
+    this.querySubscription = this.graphqlProductsService.links("-")
+      .valueChanges
+      .subscribe(({ data, loading }) => {
+        this.loading = loading;
+        this.goals = JSON.parse(JSON.stringify(data)).links;
+        console.log(JSON.stringify(this.goals))
+      });
   }
 
   addItem(){
