@@ -19,10 +19,10 @@ export class HomeComponent implements OnInit {
   pass: string = ""
   token: string = ""
 
-  goals = [];
+  goals : Array<any> = [];
 
-  loading: boolean;
-  private querySubscription: Subscription;
+  loading: boolean | undefined;
+  private querySubscription?: Subscription;
 
 
   constructor(private _data: DataService, 
@@ -61,10 +61,8 @@ export class HomeComponent implements OnInit {
   }  
 
   addItem() {
-    if (localStorage.getItem('token')) {
-      // var mytoken = this.token;
-      var mytoken = localStorage.getItem('token');
-      //this.storageService.getSession("token");
+    if (this.token) {
+      var mytoken = this.token;
       alert(this.goalText);
   
       this.graphqlProductsService.createLink(mytoken, "https://www.github.com", this.goalText)
@@ -83,7 +81,7 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  removeItem(i) {
+  removeItem(i:any) {
     this.goals.splice(i,1);
     this._data.changeGoal(this.goals);
   }
