@@ -19,7 +19,8 @@ export class HomeComponent implements OnInit {
   pass: string = ""
   token: string = ""
 
-  goals = [];
+  goals : Array<any> = [];
+
 
   loading: boolean | undefined;
   private querySubscription?: Subscription;
