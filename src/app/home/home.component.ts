@@ -58,19 +58,23 @@ export class HomeComponent implements OnInit {
   }  
 
   addItem() {
-    var mytoken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImFkc29mdCIsImV4cCI6MTYzNDc5NTgwMiwib3JpZ0lhdCI6MTYzNDc5NTUwMn0._6tOsFeS7Li59toIpxyD1rDNi_HXnjvcDPBjoKXNcUk";
-    alert(this.goalText);
+    if(this.token){
+      var mytoken = this.token;
+      alert(this.goalText);
 
-    this.graphqlProductsService.createLink(mytoken, "https://www.github.com", this.goalText)
-    .subscribe(({ data }) => {
-       console.log('link created :  ', data);
-    }, (error) => {
-       console.log('there was an error sending the query', error);
-    });
+      this.graphqlProductsService.createLink(mytoken, "https://www.github.com", this.goalText)
+      .subscribe(({ data }) => {
+        console.log('link created :  ', data);
+      }, (error) => {
+        console.log('there was an error sending the query', error);
+      });
 
-    this.goalText = "";
-    this.itemCount = this.goals.length;
-    this._data.changeGoal(this.goals);
+      this.goalText = "";
+      this.itemCount = this.goals.length;
+      this._data.changeGoal(this.goals);
+    }else{
+      alert("No token, login");
+    }
   }
 
   removeItem(i:any) {
